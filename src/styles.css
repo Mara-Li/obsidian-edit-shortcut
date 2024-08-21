@@ -1,0 +1,3 @@
+.notice:has(.error) {
+	background-color: rgba(var(--color-red-rgb), 0.9);
+}

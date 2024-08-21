@@ -1,4 +1,4 @@
-import { Plugin, type FileView } from "obsidian";
+import { Notice, Plugin, sanitizeHTMLToDom, type FileView } from "obsidian";
 
 export default class ShortcutEditMode extends Plugin {
 	button!: {
@@ -14,9 +14,9 @@ export default class ShortcutEditMode extends Plugin {
 	async onload() {
 		console.log(`[${this.manifest.name}] Loaded`);
 		const translation = {
-			switch: i18next.t("interface.menu.toggle-source-mode"),
 			live: i18next.t("plugins.editor-status.edit-live-preview"),
 			source: i18next.t("plugins.editor-status.edit-source"),
+			showViewHeader: i18next.t("setting.appearance.option-show-view-header"),
 		};
 
 		this.button = {
@@ -30,7 +30,18 @@ export default class ShortcutEditMode extends Plugin {
 			},
 		};
 
-		//add a button in the file header when switching between edit modes
+		//verify if live-preview is enabled
+		const config = this.app.vault.config;
+		const errorMessage = function (type: "livePreview" | "showViewHeader") {
+			const isDisabled =
+				type === "livePreview" ? translation.live : translation.showViewHeader;
+			const text = `<span class="error">Error: « <u>${isDisabled}</u> » is disabled. Enable it in settings.</span>`;
+
+			return sanitizeHTMLToDom(text);
+		};
+		if (!config.livePreview || !config.showViewHeader) {
+			new Notice(errorMessage(!config.livePreview ? "livePreview" : "showViewHeader"), 0);
+		}
 
 		this.registerEvent(
 			this.app.workspace.on("layout-change", () => {
