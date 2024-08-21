@@ -26,7 +26,7 @@ jobs:
 
         with:
             PLUGIN_NAME: shortcuts-edit-mode
-            CACHE: "pnpm"
+            CACHE: "bun"
         secrets:
             GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -36,6 +36,6 @@ jobs:
         with:
             PLUGIN_NAME: shortcuts-edit-mode
             BETA: ${{ inputs.beta }}
-            CACHE: "pnpm"
+            CACHE: "bun"
         secrets:
             GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
