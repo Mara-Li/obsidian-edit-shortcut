@@ -23,7 +23,6 @@ jobs:
     release:
         if: (github.event_name == 'push') || (github.event_name == 'workflow_dispatch' && !inputs.bump)
         uses: mara-li/reusable-workflows/.github/workflows/obsidian-plugin-release.yaml@main
-
         with:
             PLUGIN_NAME: shortcuts-edit-mode
             CACHE: "bun"
