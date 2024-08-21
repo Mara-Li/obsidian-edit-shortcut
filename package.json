@@ -1,7 +1,7 @@
 {
-	"name": "vault-transfer",
-	"version": "1.2.3",
-	"description": "Copies a note, and pastes it into another vault.",
+	"name": "shortcuts-edit-mode",
+	"version": "0.0.0",
+	"description": "Add a button in file header in edit mode, to switch between source & live-preview",
 	"main": "main.js",
 	"scripts": {
 		"prebuild": "tsc --noEmit --skipLibCheck",
@@ -11,16 +11,16 @@
 		"export": "node esbuild.config.mjs --production --vault",
 		"bump": "dotenv -- node commit-and-tag-version.mjs",
 		"postbump": "dotenv -- if-env SKIP_POST_BUMP=true && echo skip bump || git push --follow-tags origin master",
-		"predeploy": "pnpm run bump",
-		"deploy": "pnpm run export",
-		"lint": "pnpm biome lint --write src/"
+		"predeploy": "bun run bump",
+		"deploy": "bun run export",
+		"lint": "bun biome format --write src/"
 	},
 	"engines": {
 		"node": "^22.2.0"
 	},
 	"keywords": [],
-	"author": "",
-	"license": "MIT",
+	"author": "Mara-Li",
+	"license": "GPL-3.0-with-autoconf-exception",
 	"devDependencies": {
 		"@biomejs/biome": "1.8.1",
 		"@types/node": "^16.11.6",
@@ -32,6 +32,7 @@
 	},
 	"dependencies": {
 		"@delucis/if-env": "^1.1.2",
+		"@types/ejs": "^3.1.5",
 		"ansi-colors": "^4.1.3",
 		"commander": "^12.1.0",
 		"commit-and-tag-version": "^12.4.1",
