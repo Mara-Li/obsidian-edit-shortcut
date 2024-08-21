@@ -1,3 +1,5 @@
+## [0.0.2](https://github.com/Mara-Li/obsidian-shortcuts-LP_Source/compare/0.0.1...0.0.2) (2024-08-21)
+
 ## 0.0.1 (2024-08-21)
 ### Features
 
