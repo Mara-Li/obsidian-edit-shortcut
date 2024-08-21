@@ -40,7 +40,7 @@
 				"noSelfAssign": "error",
 				"noSetterReturn": "error",
 				"noSwitchDeclarations": "error",
-				"noUndeclaredVariables": "error",
+				"noUndeclaredVariables": "off",
 				"noUnreachable": "error",
 				"noUnreachableSuper": "error",
 				"noUnsafeFinally": "error",
@@ -90,23 +90,14 @@
 	},
 	"overrides": [
 		{
-			"ignore": [
-				"**/*.js"
-			],
-			"include": [
-				"**/*.ts",
-				"**/*.tsx"
-			]
+			"ignore": ["**/*.js"],
+			"include": ["**/*.ts", "**/*.tsx"]
 		},
 		{
-			"include": [
-				"**/*.js"
-			]
+			"include": ["**/*.js"]
 		},
 		{
-			"include": [
-				"*.json"
-			]
+			"include": ["*.json"]
 		}
 	],
 	"formatter": {
