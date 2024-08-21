@@ -1,7 +1,7 @@
 {
 	"id": "shortcuts-edit-mode",
 	"name": "File Header Shortcuts: Edit Modes",
-	"version": "0.0.0",
+	"version": "0.0.1",
 	"minAppVersion": "1.5.12",
 	"description": "Add a button in file header in edit mode, to switch between source &amp; live-preview",
 	"author": "Mara-Li",
