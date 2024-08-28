@@ -29,29 +29,28 @@ export default class ShortcutEditMode extends Plugin {
 				tooltip: translation.source,
 			},
 		};
-
-		//verify if live-preview is enabled
+		//verify if live-preview/file-header is enabled
 		const config = this.app.vault.config;
 		const errorMessage = function (type: "livePreview" | "showViewHeader") {
 			const isDisabled =
 				type === "livePreview" ? translation.live : translation.showViewHeader;
 			const text = `<span class="error">Error: « <u>${isDisabled}</u> » is disabled. Enable it in settings.</span>`;
-
 			return sanitizeHTMLToDom(text);
 		};
-		if (!config.livePreview || !config.showViewHeader) {
-			new Notice(errorMessage(!config.livePreview ? "livePreview" : "showViewHeader"), 0);
+		if (config.livePreview === false || config.showViewHeader === false) {
+			new Notice(
+				errorMessage(config.livePreview === false ? "livePreview" : "showViewHeader"),
+				0
+			);
 		}
+
+		this.enableMode();
 
 		this.registerEvent(
 			this.app.workspace.on("layout-change", () => {
 				//get if file is opened in edit mode
 				this.removeAction();
-				const lpState = this.app.workspace.getActiveFileView();
-				if (lpState && lpState.getState().mode === "source") {
-					const mode = lpState.getState().source === true ? "source" : "live";
-					this.reloadButton(mode, lpState);
-				}
+				this.enableMode();
 			})
 		);
 	}
@@ -59,6 +58,14 @@ export default class ShortcutEditMode extends Plugin {
 	onunload() {
 		this.removeAction();
 		console.log(`[${this.manifest.name}] Unloaded`);
+	}
+
+	enableMode() {
+		const lpState = this.app.workspace.getActiveFileView();
+		if (lpState && lpState.getState().mode === "source") {
+			const mode = lpState.getState().source === true ? "source" : "live";
+			this.addButton(mode, lpState);
+		}
 	}
 
 	removeAction() {
@@ -77,10 +84,5 @@ export default class ShortcutEditMode extends Plugin {
 			}
 		);
 		action.addClass("edit-mode-button");
-	}
-
-	reloadButton(mode: "source" | "live", lpState: FileView) {
-		this.removeAction();
-		this.addButton(mode, lpState);
 	}
 }
