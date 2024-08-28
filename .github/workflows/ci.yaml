@@ -24,7 +24,7 @@ jobs:
         if: (github.event_name == 'push') || (github.event_name == 'workflow_dispatch' && !inputs.bump)
         uses: mara-li/reusable-workflows/.github/workflows/obsidian-plugin-release.yaml@main
         with:
-            PLUGIN_NAME: shortcuts-edit-mode
+            PLUGIN_NAME: shortcut-edit-mode
             CACHE: "bun"
         secrets:
             GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -33,7 +33,7 @@ jobs:
         if: ${{ inputs.bump }}
         uses: mara-li/reusable-workflows/.github/workflows/obsidian-plugin-bump-version.yaml@main
         with:
-            PLUGIN_NAME: shortcuts-edit-mode
+            PLUGIN_NAME: shortcut-edit-mode
             BETA: ${{ inputs.beta }}
             CACHE: "bun"
         secrets:
