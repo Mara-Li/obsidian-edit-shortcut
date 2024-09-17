@@ -6,7 +6,7 @@ Doesn't work if LP or file header is disabled
 
 ## 📥 Installation
 
-- [ ] From Obsidian's community plugins
+- [x] From Obsidian's community plugins
 - [x] Using BRAT with `https://github.com/Mara-Li/obsidian-shortcuts-LP_Source`
 - [x] From the release page: 
     - Download the latest release
