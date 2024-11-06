@@ -22,11 +22,11 @@
   "author": "Mara-Li",
   "license": "GPL-3.0-with-autoconf-exception",
   "devDependencies": {
-    "@biomejs/biome": "1.8.1",
+    "@biomejs/biome": "1.9.4",
     "@types/node": "^16.11.6",
     "builtin-modules": "4.0.0",
     "esbuild": "0.21.5",
-    "obsidian": "^1.5.7-1",
+    "obsidian": "^1.7.2",
     "tslib": "2.6.3",
     "typescript": "5.4.5"
   },
@@ -39,7 +39,7 @@
     "dedent": "^1.5.3",
     "dotenv": "^16.4.5",
     "dotenv-cli": "^7.4.2",
-    "obsidian-typings": "^2.2.0"
+    "obsidian-typings": "^2.3.0"
   },
   "trustedDependencies": [
     "@biomejs/biome",
