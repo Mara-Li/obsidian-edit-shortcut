@@ -1,3 +1,8 @@
+## [0.0.4](https://github.com/Mara-Li/obsidian-edit-shortcut/compare/0.0.3...0.0.4) (2024-11-06)
+### Bug Fixes
+
+* **layout:** button should appear on all opened file in edit mode ([a9e700c](https://github.com/Mara-Li/obsidian-edit-shortcut/commit/a9e700c51ca41003326219815c5ef561db760d82)), closes [#3](https://github.com/Mara-Li/obsidian-edit-shortcut/issues/3)
+
 ## [0.0.3](https://github.com/Mara-Li/obsidian-shortcuts-LP_Source/compare/0.0.2...0.0.3) (2024-08-28)
 ### Bug Fixes
 
