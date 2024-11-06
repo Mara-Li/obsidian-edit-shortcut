@@ -1,4 +1,4 @@
-import { Notice, Plugin, sanitizeHTMLToDom, type FileView } from "obsidian";
+import {Notice, Plugin, sanitizeHTMLToDom, type FileView, type WorkspaceLeaf} from "obsidian";
 
 export default class ShortcutEditMode extends Plugin {
 	button!: {
@@ -45,16 +45,32 @@ export default class ShortcutEditMode extends Plugin {
 		}
 
 		this.enableMode();
-
+		
+		this.registerEvent(
+			this.app.workspace.on("active-leaf-change", (leaf) => {
+				this.setOnlyIfNotExists(leaf);
+			})
+		)
 		this.registerEvent(
 			this.app.workspace.on("layout-change", () => {
-				//get if file is opened in edit mode
 				this.removeAction();
 				this.enableMode();
 			})
-		);
+		)
 	}
 
+	setOnlyIfNotExists(leaf?: WorkspaceLeaf | null) {
+		const view = leaf?.view;
+		if (view) {
+			const viewState = view.getState() as Record<string, unknown>;
+			if (viewState.mode === "source") {
+				//@ts-ignore
+				const viewAction = view?.actionsEl.querySelector(".edit-mode-button");
+				if (!viewAction) this.enableMode();
+			}
+		}
+	}
+	
 	onunload() {
 		this.removeAction();
 		console.log(`[${this.manifest.name}] Unloaded`);
