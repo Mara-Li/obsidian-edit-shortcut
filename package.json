@@ -9,6 +9,7 @@
     "dev:prod": "node esbuild.config.mjs --vault",
     "dev": "node esbuild.config.mjs",
     "export": "node esbuild.config.mjs --production --vault",
+    "prebump" : "tsc --noEmit --skipLibCheck",
     "bump": "dotenv -- node commit-and-tag-version.mjs",
     "postbump": "dotenv -- if-env SKIP_POST_BUMP=true && echo skip bump || git push --follow-tags origin master",
     "predeploy": "bun run bump",
