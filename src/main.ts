@@ -200,6 +200,11 @@ export default class ShortcutEditMode extends Plugin {
 			}
 		);
 		action.addClass("edit-mode-button");
+		//move action right after the other button
+		const defaultButton = lpState.leaf.containerEl.querySelector(
+			`.clickable-icon.view-action[aria-label*="${i18next.t("interface.menu.read-view")}"], .clickable-icon.view-action[aria-label*="${i18next.t("interface.menu.edit-view")}"]`
+		);
+		if (defaultButton) action.after(defaultButton);
 	}
 
 	async loadSettings() {
