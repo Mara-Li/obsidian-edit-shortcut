@@ -183,16 +183,8 @@ export default class ShortcutEditMode extends Plugin {
 		return order[next];
 	}
 
-	getPrevious(actualMode: Modes) {
-		const order = this.settings.order ?? ["live", "source", "preview"];
-		const index = order.indexOf(actualMode);
-		let previous = index - 1;
-		if (previous < 0) previous = order.length - 1;
-		return order[previous];
-	}
-
 	removeAction() {
-		const action = document.querySelectorAll(".edit-mode-button");
+		const action = activeDocument.querySelectorAll(".edit-mode-button");
 		action.forEach((el) => {
 			el.remove();
 		});
