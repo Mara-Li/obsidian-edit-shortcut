@@ -21,6 +21,26 @@ export default class ShortcutEditMode extends Plugin {
 		preview?: Button;
 	};
 
+	toggleMode(lpState: FileView) {
+		const mode = this.getMode(lpState);
+		if (this.settings.includeReadingMode) {
+			const next = this.getNext(mode);
+			if (next === "preview" || mode === "preview")
+				this.app.commands.executeCommandById("markdown:toggle-preview");
+			if (
+				(mode === "live" && next === "source") ||
+				(mode === "source" && next === "live")
+			) {
+				this.app.commands.executeCommandById("editor:toggle-source");
+			} else {
+				this.app.commands.executeCommandById("editor:toggle-source");
+				sleep(1).then(() => {
+					this.app.commands.executeCommandById("editor:toggle-source");
+				});
+			}
+		} else this.app.commands.executeCommandById(`editor:toggle-source`);
+	}
+
 	async onload() {
 		console.log(`[${this.manifest.name}] Loaded`);
 		await this.loadSettings();
@@ -45,9 +65,9 @@ export default class ShortcutEditMode extends Plugin {
 			preview: {
 				icon: "book-open",
 				tooltip: translation.preview,
-			}
-		}
-		
+			},
+		};
+
 		//verify if live-preview/file-header is enabled
 		const config = this.app.vault.config;
 		const errorMessage = function (type: "livePreview" | "showViewHeader") {
@@ -81,6 +101,21 @@ export default class ShortcutEditMode extends Plugin {
 				this.enableMode();
 			})
 		);
+
+		this.addCommand({
+			id: "switch-mode",
+			name: "Switch mode",
+			checkCallback: (checking: boolean) => {
+				const lpState = this.app.workspace.getActiveFileView();
+				if (lpState) {
+					if (!checking) {
+						this.toggleMode(lpState);
+					}
+					return true;
+				}
+				return false;
+			},
+		});
 	}
 
 	hideDefaultButton() {
@@ -169,22 +204,7 @@ export default class ShortcutEditMode extends Plugin {
 			this.button[mode]!.icon,
 			this.button[mode]!.tooltip,
 			() => {
-				if (this.settings.includeReadingMode) {
-					const next = this.getNext(mode);
-					if (next === "preview" || mode === "preview")
-						this.app.commands.executeCommandById("markdown:toggle-preview");
-					if (
-						(mode === "live" && next === "source") ||
-						(mode === "source" && next === "live")
-					) {
-						this.app.commands.executeCommandById("editor:toggle-source");
-					} else {
-						this.app.commands.executeCommandById("editor:toggle-source");
-						sleep(1).then(() => {
-							this.app.commands.executeCommandById("editor:toggle-source");
-						});
-					}
-				} else this.app.commands.executeCommandById(`editor:toggle-source`);
+				this.toggleMode(lpState);
 			}
 		);
 		action.addClass("edit-mode-button");

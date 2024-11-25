@@ -30,8 +30,14 @@ export class ShorcutEditTab extends PluginSettingTab {
 			.addToggle((toggle) => {
 				toggle.setValue(this.settings.includeReadingMode).onChange(async (value) => {
 					this.settings.includeReadingMode = value;
+					if (!value) {
+						this.settings.removeReadingButton = false;
+						this.plugin.showDefaultButton();
+					}
 					await this.plugin.saveSettings();
 					this.display();
+					//refresh the view
+					this.plugin.app.workspace.trigger("layout-change");
 				});
 			});
 
@@ -44,15 +50,11 @@ export class ShorcutEditTab extends PluginSettingTab {
 						.onChange(async (value) => {
 							this.settings.removeReadingButton = value;
 							await this.plugin.saveSettings();
-							if (value) {
-								this.plugin.hideDefaultButton();
-							} else {
-								this.plugin.showDefaultButton();
-							}
+							if (value) this.plugin.hideDefaultButton();
+							else this.plugin.showDefaultButton();
 						});
 				});
 
-			//change the order of the toggl: live-preview, source, preview
 			const orders = this.settings.order ?? ["live", "source", "preview"];
 			new Setting(containerEl).setHeading().setName("Order of toggles");
 			for (const mode of orders) {
