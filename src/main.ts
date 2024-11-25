@@ -42,13 +42,12 @@ export default class ShortcutEditMode extends Plugin {
 				icon: "code",
 				tooltip: translation.source,
 			},
-		};
-		if (this.settings.includeReadingMode) {
-			this.button.preview = {
+			preview: {
 				icon: "book-open",
 				tooltip: translation.preview,
-			};
+			}
 		}
+		
 		//verify if live-preview/file-header is enabled
 		const config = this.app.vault.config;
 		const errorMessage = function (type: "livePreview" | "showViewHeader") {
@@ -172,8 +171,6 @@ export default class ShortcutEditMode extends Plugin {
 			() => {
 				if (this.settings.includeReadingMode) {
 					const next = this.getNext(mode);
-					const previous = this.getPrevious(mode);
-					console.log(`${previous} → [${mode}] → ${next}`);
 					if (next === "preview" || mode === "preview")
 						this.app.commands.executeCommandById("markdown:toggle-preview");
 					if (
