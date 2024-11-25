@@ -14,9 +14,7 @@ if you want to view the source, please visit the github repository of this plugi
 `;
 
 function cleanOutDir(outDir) {
-	if (fs.existsSync(outDir)) {
-		fs.rm(outDir, { recursive: true });
-	}
+	if (fs.existsSync(outDir)) fs.rm(outDir);
 }
 
 /**
