@@ -30,11 +30,11 @@ jobs:
             GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     bump-version-and-release:
-        if: ${{ inputs.bump }}
+        if: ${{ inputs.bump}}
         uses: mara-li/reusable-workflows/.github/workflows/obsidian-plugin-bump-version.yaml@main
         with:
             PLUGIN_NAME: shortcut-edit-mode
-            BETA: ${{ inputs.beta }}
+            BETA: ${{ inputs.beta || false }}
             CACHE: "bun"
         secrets:
             GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
