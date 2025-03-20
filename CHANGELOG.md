@@ -1,3 +1,13 @@
+## [0.0.6](https://github.com/Mara-Li/obsidian-edit-shortcut/compare/0.0.5...0.0.6) (2025-03-20)
+### Features
+
+* add support for custom translation ([7012762](https://github.com/Mara-Li/obsidian-edit-shortcut/commit/7012762791bf4bd326c831e6fec18f991f758dc6))
+* reverse graphic button + update description ([00219e0](https://github.com/Mara-Li/obsidian-edit-shortcut/commit/00219e059d5634a0493903867aafd2ca165f451a)), closes [#7](https://github.com/Mara-Li/obsidian-edit-shortcut/issues/7)
+
+### Bug Fixes
+
+* duplicate edit mode button when sidebar item click ([aa527d3](https://github.com/Mara-Li/obsidian-edit-shortcut/commit/aa527d3562e5a4b6c1b87a7a9c4747ab4896fad6)), closes [#6](https://github.com/Mara-Li/obsidian-edit-shortcut/issues/6)
+
 ## 0.0.5 (2024-12-18)
 
 ## [0.0.4](https://github.com/Mara-Li/obsidian-edit-shortcut/compare/0.0.3...0.0.4) (2024-11-06)
