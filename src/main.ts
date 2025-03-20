@@ -20,8 +20,59 @@ export default class ShortcutEditMode extends Plugin {
 	button!: {
 		live: Button;
 		source: Button;
-		preview?: Button;
+		preview: Button;
 	};
+
+	displayNextStateButton(mode: Modes): Button {
+		if (!this.button) {
+			throw new Error("Button not initialized");
+		}
+
+		// Create result button (more efficient than deep cloning)
+		const result: Button = { icon: "", tooltip: "" };
+
+		// Determine next mode
+		const nextMode: Modes = this.settings.includeReadingMode
+			? this.getNext(mode)
+			: mode === "live"
+				? "source"
+				: "live";
+
+		if (!this.settings.reverseButtonGraphics) {
+			// Show current mode button
+			result.icon = this.button[mode].icon;
+			result.tooltip = `${ln.t("actualMode")} ${this.button[mode].tooltip}`;
+
+			// Add info about what clicking will do
+			const nextModeTooltip =
+				nextMode === "preview"
+					? this.button.preview.tooltip
+					: this.button[nextMode].tooltip;
+
+			result.tooltip += `\n${i18next.t("interface.menu.switch-to-edit-view")} (${nextModeTooltip})`;
+		} else {
+			// Show button for next mode
+			let buttonMode: Modes;
+
+			if (this.settings.includeReadingMode && nextMode) {
+				buttonMode = nextMode;
+			} else {
+				buttonMode = mode === "source" ? "live" : "source";
+			}
+
+			result.icon = this.button[buttonMode].icon;
+
+			// Determine appropriate action text
+			const actionText =
+				buttonMode === "preview"
+					? i18next.t("interface.menu.switch-to-edit-view")
+					: i18next.t("interface.menu.switch-to-read-view");
+
+			result.tooltip = `${actionText} (${this.button[buttonMode].tooltip})`;
+		}
+
+		return result;
+	}
 
 	toggleMode(lpState: FileView) {
 		const mode = this.getMode(lpState);
@@ -210,13 +261,10 @@ export default class ShortcutEditMode extends Plugin {
 
 	addButton(mode: Modes, lpState: FileView) {
 		if (!this.button) new Error("Button is not defined");
-		const action = lpState.addAction(
-			this.button[mode]!.icon,
-			this.button[mode]!.tooltip,
-			() => {
-				this.toggleMode(lpState);
-			}
-		);
+		const button = this.displayNextStateButton(mode);
+		const action = lpState.addAction(button.icon, button.tooltip, () => {
+			this.toggleMode(lpState);
+		});
 		action.addClass("edit-mode-button");
 		//move action right after the other button
 		const defaultButton = lpState.leaf.containerEl.querySelector(

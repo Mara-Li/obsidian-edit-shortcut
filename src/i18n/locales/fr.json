@@ -1,10 +1,15 @@
 {
+  "actualMode": "Mode actuel :",
   "settings": {
     "includeReadingMode": {
       "desc": "Inclure le mode lecture dans le bouton. Vous pouvez changer l'ordre dans les paramètres ci-dessous.",
       "title": "Inclure le mode lecture"
     },
     "orderToggle": "Ordre des boutons",
-    "removeButton": "Supprimer le bouton par défaut entre le mode de lecture et d'édition."
+    "removeButton": "Supprimer le bouton par défaut entre le mode de lecture et d'édition.",
+    "reverseButton": {
+      "desc": "Affiche le bouton du prochain mode à la place de l'actuel.",
+      "title": "Inverser les icones des boutons"
+    }
   }
 }

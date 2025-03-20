@@ -24,6 +24,17 @@ export class ShorcutEditTab extends PluginSettingTab {
 		};
 
 		new Setting(containerEl)
+			.setName(ln.t("settings.reverseButton.title"))
+			.setDesc(ln.t("settings.reverseButton.desc"))
+			.addToggle((toggle) => {
+				toggle.setValue(this.settings.reverseButtonGraphics).onChange(async (value) => {
+					this.settings.reverseButtonGraphics = value;
+					await this.plugin.saveSettings();
+					this.plugin.app.workspace.trigger("layout-change");
+				});
+			});
+
+		new Setting(containerEl)
 			.setName(ln.t("settings.includeReadingMode.title"))
 			.setDesc(ln.t("settings.includeReadingMode.desc"))
 			.addToggle((toggle) => {
