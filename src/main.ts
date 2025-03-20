@@ -3,7 +3,7 @@ import {
 	Notice,
 	Plugin,
 	type WorkspaceLeaf,
-	sanitizeHTMLToDom,
+	sanitizeHTMLToDom, type View,
 } from "obsidian";
 import {
 	type Button,
@@ -133,18 +133,23 @@ export default class ShortcutEditMode extends Plugin {
 		);
 		if (button) button.classList.remove("edit-mode-hide");
 	}
+	
+	getViewAction(view: View) {
+		//@ts-ignore
+		return view.actionsEl?.querySelector(".edit-mode-button");
+	}
 
 	setOnlyIfNotExists(leaf?: WorkspaceLeaf | null) {
 		const view = leaf?.view;
 		if (view) {
 			const viewState = view.getState() as Record<string, unknown>;
-			if (this.settings.includeReadingMode) {
+			if (this.settings.includeReadingMode && viewState.file) {
 				//@ts-ignore
-				const viewAction = view.actionsEl?.querySelector(".edit-mode-button");
+				const viewAction = this.getViewAction(view);
 				if (!viewAction) this.enableMode();
 			} else if (viewState.mode === "source") {
 				//@ts-ignore
-				const viewAction = view.actionsEl?.querySelector(".edit-mode-button");
+				const viewAction = this.getViewAction(view);
 				if (!viewAction) this.enableMode();
 			}
 		}
