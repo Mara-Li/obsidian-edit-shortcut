@@ -1,4 +1,5 @@
 import { type App, PluginSettingTab, Setting } from "obsidian";
+import { ln } from "./i18n";
 import type { ShortcutEditSettings } from "./interfaces";
 import type ShortcutEditMode from "./main";
 
@@ -23,10 +24,8 @@ export class ShorcutEditTab extends PluginSettingTab {
 		};
 
 		new Setting(containerEl)
-			.setName("Include preview mode")
-			.setDesc(
-				"Include preview mode in the switch. You can change the order in the settings below"
-			)
+			.setName(ln.t("settings.includeReadingMode.title"))
+			.setDesc(ln.t("settings.includeReadingMode.desc"))
 			.addToggle((toggle) => {
 				toggle.setValue(this.settings.includeReadingMode).onChange(async (value) => {
 					this.settings.includeReadingMode = value;
@@ -43,7 +42,7 @@ export class ShorcutEditTab extends PluginSettingTab {
 
 		if (this.settings.includeReadingMode) {
 			new Setting(containerEl)
-				.setName("Remove the default switch between reading & editing")
+				.setName(ln.t("settings.removeButton"))
 				.addToggle((toggle) => {
 					toggle
 						.setValue(this.settings.removeReadingButton ?? false)
@@ -56,7 +55,7 @@ export class ShorcutEditTab extends PluginSettingTab {
 				});
 
 			const orders = this.settings.order ?? ["live", "source", "preview"];
-			new Setting(containerEl).setHeading().setName("Order of toggles");
+			new Setting(containerEl).setHeading().setName(ln.t("settings.orderToggle"));
 			for (const mode of orders) {
 				const isFirst = orders[0] === mode;
 				const isLast = orders[orders.length - 1] === mode;

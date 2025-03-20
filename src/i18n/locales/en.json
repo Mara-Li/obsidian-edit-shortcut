@@ -1,0 +1,10 @@
+{
+  "settings": {
+    "includeReadingMode": {
+      "desc": "Include preview mode in the switch. You can change the order in the settings below.",
+      "title": "Include preview mode"
+    },
+    "orderToggle": "Order of toggles",
+    "removeButton": "Remove the default switch between reading & editing."
+  }
+}

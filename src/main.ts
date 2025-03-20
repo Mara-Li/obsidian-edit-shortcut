@@ -2,9 +2,11 @@ import {
 	type FileView,
 	Notice,
 	Plugin,
+	type View,
 	type WorkspaceLeaf,
-	sanitizeHTMLToDom, type View,
+	sanitizeHTMLToDom,
 } from "obsidian";
+import { ln, resources, translationLanguage } from "./i18n";
 import {
 	type Button,
 	DEFAULT_SETTINGS,
@@ -43,15 +45,26 @@ export default class ShortcutEditMode extends Plugin {
 
 	async onload() {
 		console.log(`[${this.manifest.name}] Loaded`);
+
 		await this.loadSettings();
 		this.addSettingTab(new ShorcutEditTab(this.app, this));
-
 		const translation = {
 			live: i18next.t("plugins.editor-status.edit-live-preview"),
 			source: i18next.t("plugins.editor-status.edit-source"),
 			showViewHeader: i18next.t("setting.appearance.option-show-view-header"),
 			preview: i18next.t("setting.editor.option-default-new-tab-view-reading"),
 		};
+
+		await ln.init({
+			lng: translationLanguage,
+			fallbackLng: "en",
+			ns: ["default"],
+			defaultNS: "default",
+			returnNull: false,
+			returnEmptyString: false,
+			debug: true,
+			resources,
+		});
 
 		this.button = {
 			live: {
@@ -133,7 +146,7 @@ export default class ShortcutEditMode extends Plugin {
 		);
 		if (button) button.classList.remove("edit-mode-hide");
 	}
-	
+
 	getViewAction(view: View) {
 		//@ts-ignore
 		return view.actionsEl?.querySelector(".edit-mode-button");

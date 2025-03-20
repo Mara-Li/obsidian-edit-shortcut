@@ -1,0 +1,10 @@
+{
+  "settings": {
+    "includeReadingMode": {
+      "desc": "Inclure le mode lecture dans le bouton. Vous pouvez changer l'ordre dans les paramètres ci-dessous.",
+      "title": "Inclure le mode lecture"
+    },
+    "orderToggle": "Ordre des boutons",
+    "removeButton": "Supprimer le bouton par défaut entre le mode de lecture et d'édition."
+  }
+}
