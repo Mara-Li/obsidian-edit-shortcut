@@ -1,6 +1,6 @@
 {
   "name": "shortcuts-edit-mode",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Add a button in file header in edit mode, to switch between source & live-preview",
   "main": "main.js",
   "scripts": {
