@@ -113,7 +113,6 @@ export default class ShortcutEditMode extends Plugin {
 			defaultNS: "default",
 			returnNull: false,
 			returnEmptyString: false,
-			debug: true,
 			resources,
 		});
 
