@@ -13,6 +13,7 @@ import {
 	type Modes,
 	type ShortcutEditSettings,
 } from "./interfaces";
+import { IgnoreModals } from "./modal";
 import { ShorcutEditTab } from "./settings";
 
 export default class ShortcutEditMode extends Plugin {
@@ -140,10 +141,18 @@ export default class ShortcutEditMode extends Plugin {
 			return sanitizeHTMLToDom(text);
 		};
 		if (config.livePreview === false || config.showViewHeader === false) {
-			new Notice(
-				errorMessage(config.livePreview === false ? "livePreview" : "showViewHeader"),
-				0
-			);
+			if (!this.settings.ignoreWarning) {
+				new Notice(
+					errorMessage(config.livePreview === false ? "livePreview" : "showViewHeader"),
+					0
+				);
+				new IgnoreModals(this.app, async (result) => {
+					if (result) {
+						this.settings.ignoreWarning = true;
+						await this.saveSettings();
+					}
+				}).open();
+			}
 		}
 
 		if (this.settings.removeReadingButton && this.settings.includeReadingMode) {

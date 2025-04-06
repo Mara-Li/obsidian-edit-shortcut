@@ -1,5 +1,13 @@
 {
   "actualMode": "Current view:",
+  "common": {
+    "no": "No",
+    "yes": "Yes"
+  },
+  "ignoreModals": {
+    "desc": "{{- showViewHeader}} is disabled.",
+    "validation": "Are you sure you want to enable this plugin?"
+  },
   "settings": {
     "includeReadingMode": {
       "desc": "Include preview mode in the switch. You can change the order in the settings below.",

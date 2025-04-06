@@ -7,6 +7,7 @@ export interface ShortcutEditSettings {
 	includeReadingMode: boolean;
 	reverseButtonGraphics: boolean;
 	removeReadingButton?: boolean;
+	ignoreWarning?: boolean;
 	order?: Modes[];
 }
 

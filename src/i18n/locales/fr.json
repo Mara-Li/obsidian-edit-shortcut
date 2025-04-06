@@ -1,5 +1,13 @@
 {
   "actualMode": "Mode actuel :",
+  "common": {
+    "no": "Non",
+    "yes": "Oui"
+  },
+  "ignoreModals": {
+    "desc": "{{- showViewHeader}} est désactivé.",
+    "validation": "Êtes-vous sûr(e) de vouloir activer ce module ?"
+  },
   "settings": {
     "includeReadingMode": {
       "desc": "Inclure le mode lecture dans le bouton. Vous pouvez changer l'ordre dans les paramètres ci-dessous.",
