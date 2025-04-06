@@ -1,3 +1,8 @@
+## [0.0.8](https://github.com/Mara-Li/obsidian-edit-shortcut/compare/0.0.7...0.0.8) (2025-04-06)
+### Features
+
+* disable tab title warning ([afc8f7f](https://github.com/Mara-Li/obsidian-edit-shortcut/commit/afc8f7f777e7d8446facfc9069c8e0c29c1796de)), closes [#8](https://github.com/Mara-Li/obsidian-edit-shortcut/issues/8)
+
 ## [0.0.7](https://github.com/Mara-Li/obsidian-edit-shortcut/compare/0.0.6...0.0.7) (2025-03-21)
 
 ## [0.0.6](https://github.com/Mara-Li/obsidian-edit-shortcut/compare/0.0.5...0.0.6) (2025-03-20)
