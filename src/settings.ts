@@ -29,10 +29,14 @@ export class ShorcutEditTab extends PluginSettingTab {
 			.addToggle((toggle) => {
 				toggle.setValue(this.settings.reverseButtonGraphics).onChange(async (value) => {
 					this.settings.reverseButtonGraphics = value;
+					this.settings.allButtonMode = false;
 					await this.plugin.saveSettings();
 					this.plugin.app.workspace.trigger("layout-change");
+					this.display();
 				});
 			});
+
+
 
 		new Setting(containerEl)
 			.setName(ln.t("settings.includeReadingMode.title"))
@@ -40,6 +44,7 @@ export class ShorcutEditTab extends PluginSettingTab {
 			.addToggle((toggle) => {
 				toggle.setValue(this.settings.includeReadingMode).onChange(async (value) => {
 					this.settings.includeReadingMode = value;
+					this.settings.allButtonMode = false;
 					if (!value) {
 						this.settings.removeReadingButton = false;
 						this.plugin.showDefaultButton();
@@ -101,6 +106,17 @@ export class ShorcutEditTab extends PluginSettingTab {
 							});
 					});
 			}
+		} else if (!this.settings.reverseButtonGraphics) {
+			new Setting(containerEl)
+				.setName("All button mode")
+				.setDesc("Display all buttons regardless of the current mode")
+				.addToggle((toggle) => {
+					toggle.setValue(this.settings.allButtonMode).onChange(async (value) => {
+						this.settings.allButtonMode = value;
+						await this.plugin.saveSettings();
+						this.plugin.app.workspace.trigger("layout-change");
+					});
+				});
 		}
 	}
 }

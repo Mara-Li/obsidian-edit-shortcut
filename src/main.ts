@@ -192,17 +192,24 @@ export default class ShortcutEditMode extends Plugin {
 
 	hideDefaultButton() {
 		if (this.settings.removeReadingButton && this.settings.includeReadingMode) {
-			const button = document.querySelector(
-				`.clickable-icon.view-action[aria-label*="${i18next.t("interface.menu.read-view")}"], .clickable-icon.view-action[aria-label*="${i18next.t("interface.menu.edit-view")}"]`
-			);
+			const button = this.getDefaultButton()
 			if (button) button.classList.add("edit-mode-hide");
 		}
 	}
 
-	showDefaultButton() {
-		const button = document.querySelector(
+	getDefaultButton(lpState?: FileView, original: boolean = false) {
+		let elem;
+		if (lpState) elem = lpState.leaf.containerEl.querySelectorAll(`.clickable-icon.view-action[aria-label*="${i18next.t("interface.menu.read-view")}"], .clickable-icon.view-action[aria-label*="${i18next.t("interface.menu.edit-view")}"]`);
+		else elem = document.querySelectorAll(
 			`.clickable-icon.view-action[aria-label*="${i18next.t("interface.menu.read-view")}"], .clickable-icon.view-action[aria-label*="${i18next.t("interface.menu.edit-view")}"]`
 		);
+		if (original)
+			return Array.from(elem).filter((button) => !button.hasClass("edit-mode-button"))[0]
+		else return Array.from(elem)[0];
+	}
+
+	showDefaultButton() {
+		const button = this.getDefaultButton();
 		if (button) button.classList.remove("edit-mode-hide");
 	}
 
@@ -239,8 +246,16 @@ export default class ShortcutEditMode extends Plugin {
 			if (this.settings.includeReadingMode) {
 				this.addButton(this.getMode(lpState), lpState);
 			} else if (lpState.getState().mode === "source") {
-				const mode = lpState.getState().source === true ? "source" : "live";
-				this.addButton(mode, lpState);
+				if (this.settings.allButtonMode) {
+					this.addButton("live", lpState);
+					this.addButton("source", lpState);
+				} else {
+					const mode = lpState.getState().source === true ? "source" : "live";
+					this.addButton(mode, lpState);
+				}
+			} else if (this.settings.allButtonMode) {
+				this.addButton("live", lpState, true);
+				this.addButton("source", lpState, true);
 			}
 		}
 	}
@@ -267,7 +282,7 @@ export default class ShortcutEditMode extends Plugin {
 		});
 	}
 
-	addButton(mode: Modes, lpState: FileView) {
+	addButton(mode: Modes, lpState: FileView, forceDisabled?: boolean) {
 		if (!this.button) new Error("Button is not defined");
 		const button = this.displayNextStateButton(mode);
 		const action = lpState.addAction(button.icon, button.tooltip, () => {
@@ -275,10 +290,33 @@ export default class ShortcutEditMode extends Plugin {
 		});
 		action.addClass("edit-mode-button");
 		//move action right after the other button
-		const defaultButton = lpState.leaf.containerEl.querySelector(
-			`.clickable-icon.view-action[aria-label*="${i18next.t("interface.menu.read-view")}"], .clickable-icon.view-action[aria-label*="${i18next.t("interface.menu.edit-view")}"]`
-		);
+		const defaultButton = this.getDefaultButton(lpState)
 		if (defaultButton) action.after(defaultButton);
+		//add a disabled class for button of the mode 
+		if (this.settings.allButtonMode && !this.settings.includeReadingMode) {
+			const activeMode = this.getMode(lpState);
+			if (mode !== activeMode) {
+				action.ariaDisabled = "";
+				action.setAttr("enabled", true)
+			}
+			else {
+				action.ariaDisabled = "true";
+				action.setAttr("enabled", false);
+			}
+		}
+		if (forceDisabled) {
+			action.ariaDisabled = "true";
+			action.setAttr("enabled", false);
+		}
+		const originalButton = this.getDefaultButton(lpState, true)
+		if (originalButton) {
+			originalButton.addClass("edit-mode-default-button")
+			if (this.getMode(lpState) === "preview") {
+				originalButton.setAttr("active", true);
+			} else {
+				originalButton.setAttr("active", false)
+			}
+		}
 	}
 
 	async loadSettings() {
