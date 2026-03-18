@@ -12,7 +12,8 @@
 
 .edit-mode-default-button[active="true"],
 .edit-mode-button[enabled="true"] {
-	border: var(--border-width) var(--edit-mode-button-border-style) var(--interactive-accent);
+	border: var(--border-width) var(--edit-mode-button-border-style)
+		var(--interactive-accent);
 }
 
 .edit-mode-default-button[active="false"] {

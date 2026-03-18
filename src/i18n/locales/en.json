@@ -1,31 +1,31 @@
 {
-  "actualMode": "Current view:",
-  "common": {
-    "no": "No",
-    "yes": "Yes"
-  },
-  "ignoreModals": {
-    "desc": "{{- showViewHeader}} is disabled.",
-    "validation": "Are you sure you want to enable this plugin?"
-  },
-  "settings": {
-    "allButtonMode": {
-      "desc": "Display all buttons (source, reading, live) regardless the active mode.",
-      "title": "\"All button\" mode"
-    },
-    "includeReadingMode": {
-      "desc": "Include preview mode in the switch. You can change the order in the settings below.",
-      "title": "Include preview mode"
-    },
-    "orderToggle": {
-      "moveDown": "Move down",
-      "moveUp": "Move up",
-      "title": "Order of toggles"
-    },
-    "removeButton": "Remove the default switch between reading & editing.",
-    "reverseButton": {
-      "desc": "Display the next mode button in place of the current one.",
-      "title": "Reverse button icons"
-    }
-  }
+	"actualMode": "Current view:",
+	"common": {
+		"no": "No",
+		"yes": "Yes"
+	},
+	"ignoreModals": {
+		"desc": "{{- showViewHeader}} is disabled.",
+		"validation": "Are you sure you want to enable this plugin?"
+	},
+	"settings": {
+		"allButtonMode": {
+			"desc": "Display all buttons (source, reading, live) regardless the active mode.",
+			"title": "\"All button\" mode"
+		},
+		"includeReadingMode": {
+			"desc": "Include preview mode in the switch. You can change the order in the settings below.",
+			"title": "Include preview mode"
+		},
+		"orderToggle": {
+			"moveDown": "Move down",
+			"moveUp": "Move up",
+			"title": "Order of toggles"
+		},
+		"removeButton": "Remove the default switch between reading & editing.",
+		"reverseButton": {
+			"desc": "Display the next mode button in place of the current one.",
+			"title": "Reverse button icons"
+		}
+	}
 }

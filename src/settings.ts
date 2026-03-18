@@ -36,8 +36,6 @@ export class ShorcutEditTab extends PluginSettingTab {
 				});
 			});
 
-
-
 		new Setting(containerEl)
 			.setName(ln.t("settings.includeReadingMode.title"))
 			.setDesc(ln.t("settings.includeReadingMode.desc"))

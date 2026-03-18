@@ -25,9 +25,7 @@ export default class ShortcutEditMode extends Plugin {
 	};
 
 	displayNextStateButton(mode: Modes): Button {
-		if (!this.button)
-			throw new Error("Button not initialized");
-
+		if (!this.button) throw new Error("Button not initialized");
 
 		// Create result button (more efficient than deep cloning)
 		const result: Button = { icon: "", tooltip: "" };

@@ -9,7 +9,7 @@ export interface ShortcutEditSettings {
 	removeReadingButton?: boolean;
 	ignoreWarning?: boolean;
 	order?: Modes[];
-	allButtonMode: boolean,
+	allButtonMode: boolean;
 }
 
 export const DEFAULT_SETTINGS: ShortcutEditSettings = {
