@@ -2,7 +2,6 @@
 	--edit-mode-button-border-style: solid;
 }
 
-
 .notice:has(.error) {
 	background-color: rgba(var(--color-red-rgb), 0.9);
 }
@@ -10,6 +9,7 @@
 .edit-mode-hide {
 	display: none;
 }
+
 .edit-mode-default-button[active="true"],
 .edit-mode-button[enabled="true"] {
 	border: var(--border-width) var(--edit-mode-button-border-style) var(--interactive-accent);

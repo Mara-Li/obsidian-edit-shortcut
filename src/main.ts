@@ -2,9 +2,9 @@ import {
 	type FileView,
 	Notice,
 	Plugin,
+	sanitizeHTMLToDom,
 	type View,
 	type WorkspaceLeaf,
-	sanitizeHTMLToDom,
 } from "obsidian";
 import { ln, resources, translationLanguage } from "./i18n";
 import {
@@ -25,9 +25,9 @@ export default class ShortcutEditMode extends Plugin {
 	};
 
 	displayNextStateButton(mode: Modes): Button {
-		if (!this.button) {
+		if (!this.button)
 			throw new Error("Button not initialized");
-		}
+
 
 		// Create result button (more efficient than deep cloning)
 		const result: Button = { icon: "", tooltip: "" };
@@ -192,18 +192,18 @@ export default class ShortcutEditMode extends Plugin {
 
 	hideDefaultButton() {
 		if (this.settings.removeReadingButton && this.settings.includeReadingMode) {
-			const button = this.getDefaultButton()
+			const button = this.getDefaultButton();
 			if (button) button.classList.add("edit-mode-hide");
 		}
 	}
 
 	getDefaultButton(lpState?: FileView, original: boolean = false) {
-		const query = `.clickable-icon.view-action[aria-label*="${i18next.t("interface.menu.read-view")}"], .clickable-icon.view-action[aria-label*="${i18next.t("interface.menu.edit-view")}"]`
+		const query = `.clickable-icon.view-action[aria-label*="${i18next.t("interface.menu.read-view")}"], .clickable-icon.view-action[aria-label*="${i18next.t("interface.menu.edit-view")}"]`;
 		let elem;
 		if (lpState) elem = lpState.leaf.containerEl.querySelectorAll(query);
 		else elem = document.querySelectorAll(query);
 		if (original)
-			return Array.from(elem).filter((button) => !button.hasClass("edit-mode-button"))[0]
+			return Array.from(elem).filter((button) => !button.hasClass("edit-mode-button"))[0];
 		else return Array.from(elem)[0];
 	}
 
@@ -289,16 +289,15 @@ export default class ShortcutEditMode extends Plugin {
 		});
 		action.addClass("edit-mode-button");
 		//move action right after the other button
-		const defaultButton = this.getDefaultButton(lpState)
+		const defaultButton = this.getDefaultButton(lpState);
 		if (defaultButton) action.after(defaultButton);
-		//add a disabled class for button of the mode 
+		//add a disabled class for button of the mode
 		if (this.settings.allButtonMode && !this.settings.includeReadingMode) {
 			const activeMode = this.getMode(lpState);
-			if (mode !== activeMode) {
+			if (mode === activeMode) {
 				action.ariaDisabled = "";
-				action.setAttr("enabled", true)
-			}
-			else {
+				action.setAttr("enabled", true);
+			} else {
 				action.ariaDisabled = "true";
 				action.setAttr("enabled", false);
 			}
@@ -307,13 +306,13 @@ export default class ShortcutEditMode extends Plugin {
 			action.ariaDisabled = "true";
 			action.setAttr("enabled", false);
 		}
-		const originalButton = this.getDefaultButton(lpState, true)
+		const originalButton = this.getDefaultButton(lpState, true);
 		if (originalButton) {
-			originalButton.addClass("edit-mode-default-button")
+			originalButton.addClass("edit-mode-default-button");
 			if (this.getMode(lpState) === "preview") {
 				originalButton.setAttr("active", true);
 			} else {
-				originalButton.setAttr("active", false)
+				originalButton.setAttr("active", false);
 			}
 		}
 	}
