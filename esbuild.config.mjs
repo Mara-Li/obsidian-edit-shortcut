@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
-import builtins from "builtin-modules";
+import {builtinsModule as builtins} from "node:process";
 import { Command } from "commander";
 import dotenv from "dotenv";
 import esbuild from "esbuild";
