@@ -198,11 +198,10 @@ export default class ShortcutEditMode extends Plugin {
 	}
 
 	getDefaultButton(lpState?: FileView, original: boolean = false) {
+		const query = `.clickable-icon.view-action[aria-label*="${i18next.t("interface.menu.read-view")}"], .clickable-icon.view-action[aria-label*="${i18next.t("interface.menu.edit-view")}"]`
 		let elem;
-		if (lpState) elem = lpState.leaf.containerEl.querySelectorAll(`.clickable-icon.view-action[aria-label*="${i18next.t("interface.menu.read-view")}"], .clickable-icon.view-action[aria-label*="${i18next.t("interface.menu.edit-view")}"]`);
-		else elem = document.querySelectorAll(
-			`.clickable-icon.view-action[aria-label*="${i18next.t("interface.menu.read-view")}"], .clickable-icon.view-action[aria-label*="${i18next.t("interface.menu.edit-view")}"]`
-		);
+		if (lpState) elem = lpState.leaf.containerEl.querySelectorAll(query);
+		else elem = document.querySelectorAll(query);
 		if (original)
 			return Array.from(elem).filter((button) => !button.hasClass("edit-mode-button"))[0]
 		else return Array.from(elem)[0];

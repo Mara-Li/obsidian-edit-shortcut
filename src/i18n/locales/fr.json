@@ -9,11 +9,19 @@
     "validation": "Êtes-vous sûr(e) de vouloir activer ce module ?"
   },
   "settings": {
+    "allButtonMode": {
+      "desc": "Affiche tous les boutons (source, lecture, aperçu direct) quelque soit le mode actif.",
+      "title": "Mode \"tous les boutons\""
+    },
     "includeReadingMode": {
       "desc": "Inclure le mode lecture dans le bouton. Vous pouvez changer l'ordre dans les paramètres ci-dessous.",
       "title": "Inclure le mode lecture"
     },
-    "orderToggle": "Ordre des boutons",
+    "orderToggle": {
+      "moveDown": "Déplacer en bas",
+      "moveUp": "Déplacer en haut",
+      "title": "Ordre des boutons"
+    },
     "removeButton": "Supprimer le bouton par défaut entre le mode de lecture et d'édition.",
     "reverseButton": {
       "desc": "Affiche le bouton du prochain mode à la place de l'actuel.",

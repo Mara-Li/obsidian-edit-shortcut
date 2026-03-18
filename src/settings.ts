@@ -71,7 +71,7 @@ export class ShorcutEditTab extends PluginSettingTab {
 				});
 
 			const orders = this.settings.order ?? ["live", "source", "preview"];
-			new Setting(containerEl).setHeading().setName(ln.t("settings.orderToggle"));
+			new Setting(containerEl).setHeading().setName(ln.t("settings.orderToggle.title"));
 			for (const mode of orders) {
 				const isFirst = orders[0] === mode;
 				const isLast = orders[orders.length - 1] === mode;
@@ -81,7 +81,7 @@ export class ShorcutEditTab extends PluginSettingTab {
 						button
 							.setDisabled(isFirst)
 							.setIcon("chevron-up")
-							.setTooltip("Move up")
+							.setTooltip(ln.t("settings.orderToggle.moveUp"))
 							.onClick(async () => {
 								const index = orders.indexOf(mode);
 								orders.splice(index, 1);
@@ -95,7 +95,7 @@ export class ShorcutEditTab extends PluginSettingTab {
 						button
 							.setDisabled(isLast)
 							.setIcon("chevron-down")
-							.setTooltip("Move down")
+							.setTooltip(ln.t("settings.orderToggle.moveDown"))
 							.onClick(async () => {
 								const index = orders.indexOf(mode);
 								orders.splice(index, 1);
@@ -108,8 +108,8 @@ export class ShorcutEditTab extends PluginSettingTab {
 			}
 		} else if (!this.settings.reverseButtonGraphics) {
 			new Setting(containerEl)
-				.setName("All button mode")
-				.setDesc("Display all buttons regardless of the current mode")
+				.setName(ln.t("settings.allButtonMode.title"))
+				.setDesc(ln.t("settings.allButtonMode.desc"))
 				.addToggle((toggle) => {
 					toggle.setValue(this.settings.allButtonMode).onChange(async (value) => {
 						this.settings.allButtonMode = value;
