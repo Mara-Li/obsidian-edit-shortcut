@@ -1,3 +1,8 @@
+## [0.0.9-3](https://github.com/Mara-Li/obsidian-edit-shortcut/compare/0.0.9-2...0.0.9-3) (2026-03-19)
+### Features
+
+* better switch between the three mode ([a45767c](https://github.com/Mara-Li/obsidian-edit-shortcut/commit/a45767cb24c5f5c7e32efbc688d4072cc4ed6765)), closes [#9](https://github.com/Mara-Li/obsidian-edit-shortcut/issues/9)
+
 ## [0.0.9-2](https://github.com/Mara-Li/obsidian-edit-shortcut/compare/0.0.9-1...0.0.9-2) (2026-03-19)
 ### Features
 
