@@ -14,8 +14,8 @@
 			"title": "\"All button\" mode"
 		},
 		"includeReadingMode": {
-			"desc": "Include preview mode in the switch. You can change the order in the settings below.",
-			"title": "Include preview mode"
+			"desc": "Include reading mode in the switch. You can change the order in the settings below.",
+			"title": "Include reading mode"
 		},
 		"orderToggle": {
 			"moveDown": "Move down",

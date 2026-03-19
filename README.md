@@ -4,18 +4,21 @@ Add a button in file header in edit mode, to switch between source & live-previe
 
 Doesn't work if LP or file header is disabled
 
-In the setting, it is possible to create a "three mode toggle", with order. The button will, then, allow to switch between read/source/LP. It will disable the default Obsidian button, obviously.
+There are three settings:
+- **Reverse button icons** — Display the next "mode" button in place of the current mode. For example, if you are in live preview, it will display the source icon instead of the live preview icon.
+- **Include reading mode** — Include reading mode in the switch. One button will swap between a configurable order.
+- **"All button" mode** — Each mode (source, live, and reading) are separated. <mark>This mode is not compatible with the two other option.</mark>
 
-> [!note]
-> It is possible that LP will "blink" when switched with this mode.
+## All button mode
 
-You can also enable the "three mode" button, that add in the file header the three buttons and the button of the active mode will get a border, like this:
-![](./docs/3mode_source.png)
-![](./docs/3mode_lp.png)
-![](./docs/3mode_read.png)
+All icons will be displayed for each modes, in the file header, like this:
+![Obsidian file header with default theme displaying the three icones for each modes](./docs/example.png)
+
+The active mode will be highlighted and the hightlight move when switching the mode:
+//@todo
+
 
 ## Styling
-
 The plugin will use the following css class:
 - `.edit-mode-button`: Button added in the file header
 - `.edit-mode-hide`: Settings to hide the reading button
@@ -24,7 +27,6 @@ The plugin will use the following css class:
 The button in the three mode button will get the `is-active` class when necessary.
 
 ## 📥 Installation
-
 - [x] From Obsidian's community plugins
 - [x] Using BRAT with `https://github.com/Mara-Li/obsidian-shortcuts-LP_Source`
 - [x] From the release page: 
