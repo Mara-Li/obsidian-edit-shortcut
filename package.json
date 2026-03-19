@@ -14,10 +14,10 @@
     "postbump": "dotenv -- if-env SKIP_POST_BUMP=true && echo skip bump || git push --follow-tags origin master",
     "predeploy": "bun run bump",
     "deploy": "bun run export",
-    "lint": "bun biome format --write src/"
+    "lint": "biome check --unsafe --write ./src"
   },
   "engines": {
-    "node": "^22.2.0"
+    "node": "^24.14.0"
   },
   "keywords": [],
   "author": "Mara-Li",

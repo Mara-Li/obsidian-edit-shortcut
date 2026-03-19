@@ -1,5 +1,6 @@
 import {
 	type FileView,
+	MarkdownView,
 	Notice,
 	Plugin,
 	sanitizeHTMLToDom,
@@ -23,6 +24,27 @@ export default class ShortcutEditMode extends Plugin {
 		source: Button;
 		preview: Button;
 	};
+
+	private getActiveLeafAndView() {
+		const activeLeaf = this.app.workspace.getActiveViewOfType(MarkdownView)?.leaf;
+		const view = activeLeaf?.getViewState();
+		return { activeLeaf, view };
+	}
+
+	private getMode(lpState: FileView): Modes {
+		const actualMode = lpState.getState().mode;
+		if (actualMode === "source")
+			return lpState.getState().source === true ? "source" : "live";
+		return "preview";
+	}
+
+	private getNext(actualMode: Modes) {
+		const order = this.settings.order ?? ["live", "source", "preview"];
+		const index = order.indexOf(actualMode);
+		let next = index + 1;
+		if (next >= order.length) next = 0;
+		return order[next];
+	}
 
 	displayNextStateButton(mode: Modes): Button {
 		if (!this.button) throw new Error("Button not initialized");
@@ -73,19 +95,69 @@ export default class ShortcutEditMode extends Plugin {
 		return result;
 	}
 
-	toggleMode(lpState: FileView) {
+	private toSourceMode() {
+		const { activeLeaf, view } = this.getActiveLeafAndView() ?? {};
+		if (!activeLeaf || !view || !view.state) return;
+		view.state.mode = "source";
+		view.state.source = true;
+		activeLeaf.setViewState(view);
+		const editor = this.app.workspace.activeEditor?.editor;
+		if (!editor) return;
+		editor.focus();
+	}
+
+	private toReadingMode() {
+		const { activeLeaf, view } = this.getActiveLeafAndView() ?? {};
+		if (!activeLeaf || !view || !view.state) return;
+		view.state.mode = "preview";
+		activeLeaf.setViewState(view);
+	}
+
+	private toLive() {
+		const { activeLeaf, view } = this.getActiveLeafAndView() ?? {};
+		if (!activeLeaf || !view || !view.state) return;
+		view.state.mode = "source";
+		view.state.source = false;
+		activeLeaf.setViewState(view);
+		//set focus in the page
+		const editor = this.app.workspace.activeEditor?.editor;
+		if (!editor) return;
+		editor.focus();
+	}
+
+	private toggleMode(lpState: FileView) {
 		const mode = this.getMode(lpState);
 		if (this.settings.includeReadingMode) {
 			const next = this.getNext(mode);
-			if (next === "preview" || mode === "preview")
-				this.app.commands.executeCommandById("markdown:toggle-preview");
-			if (
-				(mode === "live" && next === "source") ||
-				(mode === "source" && next === "live")
-			)
-				this.app.commands.executeCommandById("editor:toggle-source");
-			else this.triggerWithSleep();
+			if (next === "preview") this.toReadingMode();
+			if (next === "live") this.toLive();
+			else if (next === "source") this.toSourceMode();
 		} else this.app.commands.executeCommandById(`editor:toggle-source`);
+	}
+
+	private enableMode() {
+		const lpState = this.app.workspace.getActiveFileView();
+		if (lpState) {
+			if (this.settings.includeReadingMode) {
+				this.addButton(this.getMode(lpState), lpState);
+			} else if (lpState.getState().mode === "source") {
+				if (this.settings.allButtonMode) {
+					this.addButton("live", lpState);
+					this.addButton("source", lpState);
+				} else {
+					const mode = lpState.getState().source === true ? "source" : "live";
+					this.addButton(mode, lpState);
+				}
+			} else if (this.settings.allButtonMode) {
+				this.addButton("live", lpState, true);
+				this.addButton("source", lpState, true);
+			}
+		}
+	}
+
+	private swapSourceMode(button: Modes) {
+		if (button === "source") this.toSourceMode();
+		if (button === "live") this.toLive();
 	}
 
 	async onload() {
@@ -232,95 +304,10 @@ export default class ShortcutEditMode extends Plugin {
 		this.showDefaultButton();
 	}
 
-	enableMode() {
-		const lpState = this.app.workspace.getActiveFileView();
-		if (lpState) {
-			if (this.settings.includeReadingMode) {
-				this.addButton(this.getMode(lpState), lpState);
-			} else if (lpState.getState().mode === "source") {
-				if (this.settings.allButtonMode) {
-					this.addButton("live", lpState);
-					this.addButton("source", lpState);
-				} else {
-					const mode = lpState.getState().source === true ? "source" : "live";
-					this.addButton(mode, lpState);
-				}
-			} else if (this.settings.allButtonMode) {
-				this.addButton("live", lpState, true);
-				this.addButton("source", lpState, true);
-			}
-		}
-	}
-
-	getMode(lpState: FileView): Modes {
-		const actualMode = lpState.getState().mode;
-		if (actualMode === "source")
-			return lpState.getState().source === true ? "source" : "live";
-		return "preview";
-	}
-
-	getNext(actualMode: Modes) {
-		const order = this.settings.order ?? ["live", "source", "preview"];
-		const index = order.indexOf(actualMode);
-		let next = index + 1;
-		if (next >= order.length) next = 0;
-		return order[next];
-	}
-
 	removeAction() {
 		activeDocument.querySelectorAll(".edit-mode-button").forEach((el) => {
 			el.remove();
 		});
-	}
-
-	toSourceMode(lpState: FileView) {
-		//sourcemode in edit 
-		//similar to the order working 
-		//if next === source & actual is source => nothing
-		const actualMode = this.getMode(lpState);
-		if (actualMode === "source") return;
-		//if next === source & actual = lp => toggle one time
-		if (actualMode === "live") {
-			this.app.commands.executeCommandById("editor:toggle-source");
-		}
-		if (actualMode === "preview") {
-			this.app.commands.executeCommandById("markdown:toggle-preview");
-			const newActual = this.getMode(lpState);
-			if (newActual === "source") return;
-			this.triggerWithSleep()
-		}
-	}
-
-	/**
-	 * It should be a better way to trigger this.
-	 * It swap to a wanted mode but it flickers
-	 * Like wanting source when in preview & last mode was lp
-	 */
-	triggerWithSleep() {
-		this.app.commands.executeCommandById("editor:toggle-source");
-		sleep(1).then(() => {
-			this.app.commands.executeCommandById("editor:toggle-source");
-		});
-	}
-
-	toLive(lpState: FileView) {
-		const actualMode = this.getMode(lpState);
-		if (actualMode === "live") return;
-		if (actualMode === "source") {
-			this.app.commands.executeCommandById("editor:toggle-source");
-		}
-		if (actualMode == "preview") {
-			this.app.commands.executeCommandById("markdown:toggle-preview");
-			if (this.getMode(lpState) === "live") return;
-			//@todo: find a better why to do that
-			this.triggerWithSleep()
-		}
-	}
-
-
-	switchThreeModeButton(lpState: FileView, button: Modes) {
-		if (button === "source") this.toSourceMode(lpState);
-		if (button === "live") this.toLive(lpState);
 	}
 
 	addButton(mode: Modes, lpState: FileView, forceDisabled?: boolean) {
@@ -328,7 +315,7 @@ export default class ShortcutEditMode extends Plugin {
 		const button = this.displayNextStateButton(mode);
 		const action = lpState.addAction(button.icon, button.tooltip, () => {
 			if (!this.settings.allButtonMode) this.toggleMode(lpState);
-			else this.switchThreeModeButton(lpState, mode);
+			else this.swapSourceMode(mode);
 		});
 		action.addClass("edit-mode-button");
 		//move action right after the other button
@@ -337,18 +324,15 @@ export default class ShortcutEditMode extends Plugin {
 		//add a disabled class for button of the mode
 		if (this.settings.allButtonMode && !this.settings.includeReadingMode) {
 			const activeMode = this.getMode(lpState);
-			if (mode === activeMode)
-				action.addClass("is-active");
+			if (mode === activeMode) action.addClass("is-active");
 			else action.removeClass("is-active");
 		}
 		if (forceDisabled) action.removeClass("is-active");
 		const originalButton = this.getDefaultButton(lpState, true);
 		if (originalButton) {
 			originalButton.addClass("edit-mode-default-button");
-			if (this.getMode(lpState) === "preview")
-				originalButton.addClass("is-active");
-			else
-				originalButton.removeClass("is-active");
+			if (this.getMode(lpState) === "preview") originalButton.addClass("is-active");
+			else originalButton.removeClass("is-active");
 		}
 	}
 
