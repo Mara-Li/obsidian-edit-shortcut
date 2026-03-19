@@ -21,23 +21,7 @@ The plugin will use the following css class:
 - `.edit-mode-hide`: Settings to hide the reading button
 - `.edit-mode-default-button`: Reading button in the three mode behavior
 
-And the button will gain:
-- `[enabled]`
-- `[active]` (only for `edit-mode-default-button`)
-
-The following style is applied on the 3 mode button: 
-```css
-.edit-mode-default-button[active="true"],
-.edit-mode-button[enabled="true"] {
-	border: var(--border-width) var(--edit-mode-button-border-style) var(--interactive-accent);
-}
-
-.edit-mode-default-button[active="false"] {
-	opacity: 0.4;
-}
-```
-
-You can check [the source file](./src/styles.css) for the complete styling of the plugin.
+The button in the three mode button will get the `is-active` class when necessary.
 
 ## 📥 Installation
 

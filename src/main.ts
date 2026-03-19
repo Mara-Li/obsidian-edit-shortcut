@@ -82,14 +82,9 @@ export default class ShortcutEditMode extends Plugin {
 			if (
 				(mode === "live" && next === "source") ||
 				(mode === "source" && next === "live")
-			) {
+			)
 				this.app.commands.executeCommandById("editor:toggle-source");
-			} else {
-				this.app.commands.executeCommandById("editor:toggle-source");
-				sleep(1).then(() => {
-					this.app.commands.executeCommandById("editor:toggle-source");
-				});
-			}
+			else this.triggerWithSleep();
 		} else this.app.commands.executeCommandById(`editor:toggle-source`);
 	}
 
@@ -273,17 +268,67 @@ export default class ShortcutEditMode extends Plugin {
 	}
 
 	removeAction() {
-		const action = activeDocument.querySelectorAll(".edit-mode-button");
-		action.forEach((el) => {
+		activeDocument.querySelectorAll(".edit-mode-button").forEach((el) => {
 			el.remove();
 		});
+	}
+
+	toSourceMode(lpState: FileView) {
+		//sourcemode in edit 
+		//similar to the order working 
+		//if next === source & actual is source => nothing
+		const actualMode = this.getMode(lpState);
+		if (actualMode === "source") return;
+		//if next === source & actual = lp => toggle one time
+		if (actualMode === "live") {
+			this.app.commands.executeCommandById("editor:toggle-source");
+		}
+		if (actualMode === "preview") {
+			this.app.commands.executeCommandById("markdown:toggle-preview");
+			const newActual = this.getMode(lpState);
+			if (newActual === "source") return;
+			this.triggerWithSleep()
+		}
+	}
+
+	/**
+	 * It should be a better way to trigger this.
+	 * It swap to a wanted mode but it flickers
+	 * Like wanting source when in preview & last mode was lp
+	 */
+	triggerWithSleep() {
+		this.app.commands.executeCommandById("editor:toggle-source");
+		sleep(1).then(() => {
+			this.app.commands.executeCommandById("editor:toggle-source");
+		});
+	}
+
+	toLive(lpState: FileView) {
+		const actualMode = this.getMode(lpState);
+		if (actualMode === "live") return;
+		if (actualMode === "source") {
+			this.app.commands.executeCommandById("editor:toggle-source");
+		}
+		if (actualMode == "preview") {
+			this.app.commands.executeCommandById("markdown:toggle-preview");
+			if (this.getMode(lpState) === "live") return;
+			//@todo: find a better why to do that
+			this.triggerWithSleep()
+		}
+	}
+
+
+	switchThreeModeButton(lpState: FileView, button: Modes) {
+		if (button === "source") this.toSourceMode(lpState);
+		if (button === "live") this.toLive(lpState);
 	}
 
 	addButton(mode: Modes, lpState: FileView, forceDisabled?: boolean) {
 		if (!this.button) new Error("Button is not defined");
 		const button = this.displayNextStateButton(mode);
 		const action = lpState.addAction(button.icon, button.tooltip, () => {
-			this.toggleMode(lpState);
+			if (!this.settings.allButtonMode) this.toggleMode(lpState);
+			else this.switchThreeModeButton(lpState, mode);
 		});
 		action.addClass("edit-mode-button");
 		//move action right after the other button
@@ -292,26 +337,18 @@ export default class ShortcutEditMode extends Plugin {
 		//add a disabled class for button of the mode
 		if (this.settings.allButtonMode && !this.settings.includeReadingMode) {
 			const activeMode = this.getMode(lpState);
-			if (mode === activeMode) {
-				action.ariaDisabled = "";
-				action.setAttr("enabled", true);
-			} else {
-				action.ariaDisabled = "true";
-				action.setAttr("enabled", false);
-			}
+			if (mode === activeMode)
+				action.addClass("is-active");
+			else action.removeClass("is-active");
 		}
-		if (forceDisabled) {
-			action.ariaDisabled = "true";
-			action.setAttr("enabled", false);
-		}
+		if (forceDisabled) action.removeClass("is-active");
 		const originalButton = this.getDefaultButton(lpState, true);
 		if (originalButton) {
 			originalButton.addClass("edit-mode-default-button");
-			if (this.getMode(lpState) === "preview") {
-				originalButton.setAttr("active", true);
-			} else {
-				originalButton.setAttr("active", false);
-			}
+			if (this.getMode(lpState) === "preview")
+				originalButton.addClass("is-active");
+			else
+				originalButton.removeClass("is-active");
 		}
 	}
 
