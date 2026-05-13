@@ -1,3 +1,5 @@
+## 0.0.9 (2026-05-13)
+
 ## [0.0.8](https://github.com/Mara-Li/obsidian-edit-shortcut/compare/0.0.7...0.0.8) (2025-04-06)
 ### Features
 
