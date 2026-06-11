@@ -18,7 +18,7 @@ import { IgnoreModals } from "./modal";
 import { ShorcutEditTab } from "./settings";
 
 export default class ShortcutEditMode extends Plugin {
-	settings!: ShortcutEditSettings;
+	declare settings: ShortcutEditSettings;
 	button!: {
 		live: Button;
 		source: Button;
