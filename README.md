@@ -1,4 +1,4 @@
-# File Header Shortcuts: Edit Modes
+# Edit mode switch
 
 Add a button to the file header in edit mode to switch between Source and Live Preview.
 
